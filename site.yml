@@ -1,0 +1,83 @@
+---
+- hosts: hadoopnodes
+  become: yes
+  tasks:
+    - name: install python packages.
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - python-networkx
+        - python-pandas
+
+- name: Deploy the dataset and run analysis.
+  tags: data
+  hosts: frontendnodes
+
+  vars:
+    download_dir: "/tmp"
+    db_dir: "/tmp/network"
+    db4_path: "{{ db_dir }}/{{ databases.4.url | splitext | first }}"
+    databases:
+      4:
+        url: "http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip"
+
+  tasks:
+
+    - name: install unzip
+      become: yes
+      apt:
+        name: unzip
+        state: present
+
+    - name: prepare the directories for dataset and output files
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ download_dir }}"
+        - "{{ db_dir }}"
+        - "/tmp/graphs"
+
+    - name: download the 100 csv files from source
+      get_url:
+        url: "{{ databases.4.url }}"
+        dest: "{{ download_dir }}"
+        timeout: 60
+
+    - name: extract files
+      become: yes
+      unarchive:
+        src: "{{ download_dir }}/{{ databases.4.url | basename }}"
+        dest: "{{ db_dir }}"
+        owner: hadoop
+        group: hadoop
+        creates: "{{ db4_path }}"
+        copy: false
+
+    - name: fix permissions
+      become: yes
+      file:
+        path: "{{ db_dir }}"
+        owner: hadoop
+        group: hadoop
+        recurse: yes
+
+    - name: import 100 csv files into hdfs
+      become: yes
+      become_user: hadoop
+      shell: "sh -lc 'hadoop fs -put {{ db_dir }} /network'"
+
+    - name: download the code script graph_generator.py
+      get_url:
+        url: "http://jima-wordpress.stor.sinaapp.com/graph_generator.py"
+        dest: "{{ download_dir }}"
+        timeout: 60
+
+    - debug: msg="now begin to run the analysis script, takes about 1 minute"
+
+    - name: run the analysis script graph_generator.py
+      become: yes
+      shell: "sh -lc 'python /tmp/graph_generator.py'"
+
+    - debug: msg="100 GraphML files have been generated and under /tmp/graphs directory of the frontendnode"
