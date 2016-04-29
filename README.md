@@ -1,6 +1,6 @@
 ## I590 Big Data Software - Final Project: Construct Network Graphs
 
-### Student Name: Ji Ma
+#### Student Name: Ji Ma
 
 ### Description of Project
 
