@@ -41,6 +41,8 @@ After the analysis (takes about 1 minute), 100 GraphML files can be obtained and
 
 Major finding is the improvement of efficiency: usually it takes about 20 minutes to complete a similar task, current project only takes about 1 minute.
 
-### References
+### References & Acknowledgements
 - Original dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
 - Python analysis script: http://jima-wordpress.stor.sinaapp.com/graph_generator.py
+
+Special thanks to Hyungro Lee and Badi' Abdul-Wahid for their patient guidance.
