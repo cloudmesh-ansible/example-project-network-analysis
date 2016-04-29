@@ -5,6 +5,7 @@
 ### Description of Project
 
 This project will complete the following tasks:
+
 1. Deploy the Big Data Stack following the official documents;
 2. Use Ansible Playbook install Python packages (i.e., networkx and pandas) on VMs for network analysis;
 3. Use Ansible Playbook download the 100 csv files (dataset hosted on my own website);
