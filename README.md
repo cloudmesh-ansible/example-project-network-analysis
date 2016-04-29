@@ -13,5 +13,5 @@ This project will complete the following tasks:
 After the analysis (takes about 3 minutes), 100 GraphML files can be obtained and stored under /tmp/graphs directory in the fronthead VM.
 
 ### Dataset & Analysis Script
-Dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
-Python analysis script: http://jima-wordpress.stor.sinaapp.com/graph_generator.py
+- Dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
+- Python analysis script: http://jima-wordpress.stor.sinaapp.com/graph_generator.py
