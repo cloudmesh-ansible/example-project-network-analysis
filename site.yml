@@ -10,7 +10,7 @@
         - python-networkx
         - python-pandas
 
-- name: Deploy the dataset
+- name: Deploy the dataset and run analysis.
   tags: data
   hosts: frontendnodes
 
