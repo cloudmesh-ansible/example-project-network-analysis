@@ -74,7 +74,7 @@
         dest: "{{ download_dir }}"
         timeout: 60
 
-    - debug: msg="now begin to run the analysis script, takes about 3 minutes, be patient"
+    - debug: msg="now begin to run the analysis script, takes about 1 minute"
 
     - name: run the analysis script graph_generator.py
       become: yes

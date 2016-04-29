@@ -1,4 +1,5 @@
-## I590 Big Data Software - Final Project Report: Construct Network Graphs using Python, Spark, and Hadoop
+## Project Report: Construct Network Graphs using Python, Spark, and Hadoop
+#### Final Project for I590 Big Data Software, Spring 2016
 
 #### Student Name: Ji Ma
 
@@ -10,8 +11,12 @@ This project will deploy Big Data Analytics Stack on virtual machines and then c
 
 Network analysis usually requires intensive computing resources and long time waiting; therefore, run the tasks using HDFS, Spark, and Python can greatly improve the efficiency.
 
-### Purpose and Objectives
+### Major Software Packages and Technologies
+1. Ansible: For automated deployment of software packages across multiple VMs and running script;
+2. Hadoop: For hosting dataset;
+3. Spark and Python: For constructing graphs and analysis purpose.
 
+### Purpose and Objectives
 This project will complete the following tasks:
 
 1. Deploy the Big Data Stack following the official documents;
@@ -23,11 +28,6 @@ This project will complete the following tasks:
 
 Task #2-6 are wrote into Ansible Playbook `site.yml`.
 
-### Major Software Packages and Technologies
-1. Ansible: For automated deployment of software packages and running script across multiple VMs;
-2. Hadoop: For hosting dataset;
-3. Spark and Python: For constructing graphs and analysis purpose.
-
 ### How to Run
 1. Clone this repository.
 2. Deployed the Big Data Stack following the official documents (https://github.com/futuresystems/big-data-stack);
@@ -35,11 +35,11 @@ Task #2-6 are wrote into Ansible Playbook `site.yml`.
 4. Run `ansible-playbook site.yml` to down dataset, deploy onto HDFS, and run analysis et al (Major tasks of this project).
 
 ### Results
-After the analysis (takes about 3 minutes), 100 GraphML files can be obtained and stored under /tmp/graphs directory in the fronthead VM.
+After the analysis (takes about 1 minute), 100 GraphML files can be obtained and stored under /tmp/graphs directory in the fronthead VM.
 
 ### Findings
 
-Major finding is the improvement of efficiency: usually it takes about 20 minutes to complete a similar task, current project only takes about 3 minutes.
+Major finding is the improvement of efficiency: usually it takes about 20 minutes to complete a similar task, current project only takes about 1 minute.
 
 ### References
 - Original dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
