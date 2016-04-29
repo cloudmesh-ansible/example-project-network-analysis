@@ -30,13 +30,14 @@
         name: unzip
         state: present
 
-    - name: prepare the data directories
+    - name: prepare the directories for dataset and output files
       file:
         path: "{{ item }}"
         state: directory
       with_items:
         - "{{ download_dir }}"
         - "{{ db_dir }}"
+        - "/tmp/graphs"
 
     - name: download the 100 csv files from source
       get_url:
@@ -79,4 +80,4 @@
       become: yes
       shell: "sh -lc 'python /tmp/graph_generator.py'"
 
-    - debug: msg="100 GraphML files have been generated and under /tmp/graphs directory"
+    - debug: msg="100 GraphML files have been generated and under /tmp/graphs directory of the frontendnode"

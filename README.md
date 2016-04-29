@@ -1,8 +1,16 @@
-## I590 Big Data Software - Final Project: Construct Network Graphs
+## I590 Big Data Software - Final Project Report: Construct Network Graphs using Python, Spark, and Hadoop
 
 #### Student Name: Ji Ma
 
 ### Description of Project
+
+This project will deploy Big Data Analytics Stack on virtual machines and then construct 100 graphs from 100 csv files using Python, Spark, and Hadoop.
+
+### Problem Statement
+
+Network analysis usually requires intensive computing resources and long time waiting; therefore, run the tasks using HDFS, Spark, and Python can greatly improve the efficiency.
+
+### Purpose and Objectives
 
 This project will complete the following tasks:
 
@@ -29,6 +37,10 @@ Task #2-6 are wrote into Ansible Playbook `site.yml`.
 ### Results
 After the analysis (takes about 3 minutes), 100 GraphML files can be obtained and stored under /tmp/graphs directory in the fronthead VM.
 
-### Dataset & Analysis Script
-- Dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
+### Findings
+
+Major finding is the improvement of efficiency: usually it takes about 20 minutes to complete a similar task, current project only takes about 3 minutes.
+
+### References
+- Original dataset: http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip
 - Python analysis script: http://jima-wordpress.stor.sinaapp.com/graph_generator.py
