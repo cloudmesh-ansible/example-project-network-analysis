@@ -20,7 +20,7 @@
     db4_path: "{{ db_dir }}/{{ databases.4.url | splitext | first }}"
     databases:
       4:
-        url: "http://jima-wordpress.stor.sinaapp.com/simu-0-99.zip"
+        url: "http://149.165.159.58/data/FG491/ma47/simu-0-99.zip"
 
   tasks:
 
@@ -70,7 +70,7 @@
 
     - name: download the code script graph_generator.py
       get_url:
-        url: "http://jima-wordpress.stor.sinaapp.com/graph_generator.py"
+        url: "http://149.165.159.58/data/FG491/ma47/graph_generator.py"
         dest: "{{ download_dir }}"
         timeout: 60
 
