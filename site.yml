@@ -16,8 +16,10 @@
 
   vars:
     download_dir: "/tmp"
+    datafile: "simu-0-99.zip"
+
     db_dir: "/tmp/network"
-    db4_path: "{{ db_dir }}/{{ databases.4.url | splitext | first }}"
+    db4_path: "{{ db_dir }}/{{ datafile | splitext | first }}"
     databases:
       4:
         url: "http://149.165.159.58/data/FG491/ma47/simu-0-99.zip"
@@ -39,21 +41,15 @@
         - "{{ db_dir }}"
         - "/tmp/graphs"
 
-    - name: download the 100 csv files from source
-      get_url:
-        url: "{{ databases.4.url }}"
-        dest: "{{ download_dir }}"
-        timeout: 60
 
     - name: extract files
       become: yes
       unarchive:
-        src: "{{ download_dir }}/{{ databases.4.url | basename }}"
+        src: "{{ datafile }}"
         dest: "{{ db_dir }}"
         owner: hadoop
         group: hadoop
         creates: "{{ db4_path }}"
-        copy: false
 
     - name: fix permissions
       become: yes
@@ -69,10 +65,9 @@
       shell: "sh -lc 'hadoop fs -put {{ db_dir }} /network'"
 
     - name: download the code script graph_generator.py
-      get_url:
-        url: "http://149.165.159.58/data/FG491/ma47/graph_generator.py"
+      copy:
+        src: "graph_generator.py"
         dest: "{{ download_dir }}"
-        timeout: 60
 
     - debug: msg="now begin to run the analysis script, takes about 1 minute"
 
