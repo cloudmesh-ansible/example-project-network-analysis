@@ -1,0 +1,16 @@
+---
+
+
+- name: Deploy the dataset
+  tags: data
+  hosts: frontendnodes
+
+  tasks:
+
+    - debug: msg="now begin to run the analysis script, takes about 1 minute"
+
+    - name: run the analysis script graph_generator.py
+      become: yes
+      shell: "sh -lc 'python /tmp/graph_generator.py'"
+
+    - debug: msg="100 GraphML files have been generated and under /tmp/graphs directory of the frontendnode"
