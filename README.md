@@ -26,13 +26,11 @@ This project will complete the following tasks:
 5. Use Ansible Playbook download the python script for analysis (script wrote by myself and hosted on my own website);
 6. Use Ansible Playbook run the analysis script.
 
-Task #2-6 are wrote into Ansible Playbook `site.yml`.
-
 ### How to Run
 1. Clone this repository.
 2. Deployed the Big Data Stack following the official documents (https://github.com/futuresystems/big-data-stack);
 3. Run `ansible-playbook addons/{pig,spark}.yml` to install the Pig and Spark addons.
-4. Run `ansible-playbook site.yml` to down dataset, deploy onto HDFS, and run analysis et al (Major tasks of this project).
+4. Run `ansible-playbook deploy.yml run.yml` to down dataset, deploy onto HDFS, and run analysis et al (Major tasks of this project).
 
 ### Results
 After the analysis (takes about 1 minute), 100 GraphML files can be obtained and stored under /tmp/graphs directory in the fronthead VM.
