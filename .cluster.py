@@ -38,7 +38,7 @@ node = lambda i: {
 
 from vcl.specification import expand, group, combine, chain
 
-N_NODES = 4
+N_NODES = 3
 
 machines = list(chain(
     expand(node, N_NODES),
