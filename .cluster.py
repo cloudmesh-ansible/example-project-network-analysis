@@ -28,65 +28,30 @@ defaults = {
 }
 
 
-zk = lambda i: {
-    'zk%d' % i: {}
-}
-
-master = lambda i: {
+node = lambda i: {
     'master%d' % i: {}
-        # 'openstack': {'security_groups': ['default', 'hadoop-status']}
 }
 
-data = lambda i: {
-    'data%d' % i: {}
-}
 
-frontend = lambda i: {
-    'frontend%d' % i: {
-        # 'extra_disks': {'vdb': {'size': '10G'}},
-        # 'openstack': {'create_floating_ip': True},
-    }
-}
 
-loadbalancer = lambda i: {
-    'loadbalancer%d' % i: {
-        # 'openstack': {'flavor': 'm1.medium',
-        #               'security_groups': ['default', 'sshlb'],}
-
-    }
-}
-
-monitor = lambda i: {
-    'monitor%d' % i: {}
-}
-
-gluster = lambda i: {
-    'gluster%d' % i: {
-        'ip': '10.0.6.{}'.format(i+10),
-        'openstack': {'flavor': 'm1.large',}
-
-    }
-}
 
 
 from vcl.specification import expand, group, combine, chain
 
-N_MASTER = 3
-N_DATA = 3
+N_NODES = 4
 
 machines = list(chain(
-    expand(master, N_MASTER),
-    # expand(data, N_DATA),
+    expand(node, N_NODES),
 ))
 
-_zookeepernodes = [(master, [0,1,2])]
-_namenodes = [(master, [0, 1])]
-_journalnodes = [(master, [0,1,2])]
-_historyservers = [(master, [2])]
-_resourcemanagers = [(master, [0,1])]
-_datanodes = [(master, xrange(N_DATA))]
-_frontends = [(master, [0])]
-_monitor = [(master, [2])]
+_zookeepernodes = [(node, [0,1,2])]
+_namenodes = [(node, [0, 1])]
+_journalnodes = [(node, [0,1,2])]
+_historyservers = [(node, [2])]
+_resourcemanagers = [(node, [0,1])]
+_datanodes = [(node, xrange(N_NODES))]
+_frontends = [(node, [0])]
+_monitor = [(node, [2])]
 
 
 
