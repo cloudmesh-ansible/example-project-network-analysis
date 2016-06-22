@@ -1,0 +1,12 @@
+---
+
+- name: generate datasets
+  hosts: frontendnodes
+  become: yes
+  become_user: hadoop
+  tasks:
+
+    - name: generate data
+      shell: "sh -lc './spark-submit.sh generate'"
+      args:
+        chdir: "{{ ansible_env.HOME }}"

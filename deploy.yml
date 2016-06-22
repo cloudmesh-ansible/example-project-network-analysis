@@ -1,70 +1,67 @@
 ---
-- hosts: hadoopnodes
-  become: yes
+
+- name: Install Dependencies
+  hosts: frontendnodes
   tasks:
-    - name: install python packages.
+
+    - name: add repository keys
+      become: yes
+      apt_key:
+        keyserver: "keyserver.ubuntu.com"
+        id: "642AC823"
+        state: present
+
+    - name: add repositories
+      become: yes
+      apt_repository:
+        repo: "deb https://dl.bintray.com/sbt/debian /"
+        state: present
+        update_cache: yes
+
+    - name: install dependencies
+      become: yes
       apt:
         name: "{{ item }}"
         state: present
       with_items:
-        - python-networkx
-        - python-pandas
+        - build-essential
+        - sbt
 
-- name: Deploy the dataset
-  tags: data
+- name: deploy code
   hosts: frontendnodes
-
-  vars:
-    download_dir: "/tmp"
-    datafile: "simu-0-99.zip"
-
-    db_dir: "/tmp/network"
-    db4_path: "{{ db_dir }}/{{ datafile | splitext | first }}"
-    databases:
-      4:
-        url: "http://149.165.159.58/data/FG491/ma47/simu-0-99.zip"
-
+  become: yes
+  become_user: hadoop
   tasks:
 
-    - name: install unzip
-      become: yes
-      apt:
-        name: unzip
-        state: present
-
-    - name: prepare the directories for dataset and output files
+    - name: prepare directories
       file:
-        path: "{{ item }}"
+        path: "{{ ansible_env.HOME }}/{{ item }}"
         state: directory
-      with_items:
-        - "{{ download_dir }}"
-        - "{{ db_dir }}"
-        - "/tmp/graphs"
+      items:
+        - project
 
-
-    - name: extract files
-      become: yes
-      unarchive:
-        src: "{{ datafile }}"
-        dest: "{{ db_dir }}"
-        owner: hadoop
-        group: hadoop
-        creates: "{{ db4_path }}"
+    - name: copy files
+      copy:
+        src: "{{ item }}"
+        dest: "{{ ansible_env.HOME }}/{{ item }}"
+      items:
+        - build.sbt
+        - network.scala
+        - project/assembly.sbt
+        - spark-submit.sh
 
     - name: fix permissions
-      become: yes
       file:
-        path: "{{ db_dir }}"
-        owner: hadoop
-        group: hadoop
-        recurse: yes
+        path: "{{ ansible_env.HOME }}/spark-submit.sh"
+        state: file
+        mode: 0755
 
-    - name: import 100 csv files into hdfs
-      become: yes
-      become_user: hadoop
-      shell: "sh -lc 'hadoop fs -put {{ db_dir }} /network'"
+    - name: package
+      shell: "sbt package"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
 
-    - name: download the code script graph_generator.py
-      copy:
-        src: "graph_generator.py"
-        dest: "{{ download_dir }}"
+    - name: assembly
+      shell: "sbt assembly"
+      args:
+        chdir: "{{ ansible_env.HOME }}"

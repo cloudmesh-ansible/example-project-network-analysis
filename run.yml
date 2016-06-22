@@ -1,16 +1,15 @@
 ---
 
 
-- name: Deploy the dataset
-  tags: data
+- name: Run the analysis
   hosts: frontendnodes
-
+  become: yes
+  become_user: hadoop
   tasks:
 
-    - debug: msg="now begin to run the analysis script, takes about 1 minute"
+    - debug: msg="This may take a while"
 
-    - name: run the analysis script graph_generator.py
-      become: yes
-      shell: "sh -lc 'python /tmp/graph_generator.py'"
-
-    - debug: msg="100 GraphML files have been generated and under /tmp/graphs directory of the frontendnode"
+    - name: run the analysis
+      shell: "sh -lc './spark-submit.sh run'"
+      args:
+        chdir: "{{ ansible_env.HOME }}"
