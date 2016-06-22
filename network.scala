@@ -30,6 +30,8 @@ case class Config(
   genmethod: String = "rmat",
   numnodes: Int = 100,
   numedges: Int = 1000,
+  mu: Double = 4.0,
+  sigma: Double = 1.3,
   edgesfile: String = "edges.txt",
   nodesfile: String = "nodes.txt",
   metric: String = "pagerank",
@@ -43,11 +45,15 @@ object networkanalysis {
   val parser = new OptionParser[Config]("networkanalysis") {
     opt[String]('a', "action").action( (x, c) => c.copy(action=x) ).text("Action to execute {generate|run}")
 
-    opt[String]('g', "genmethod").action( (x,c) => c.copy(genmethod=x) ).text("Graph generation method {rmat}")
+    opt[String]('g', "genmethod").action( (x,c) => c.copy(genmethod=x) ).text("Graph generation method {rmat|lognormal}")
 
     opt[Int]('n', "numnodes").action( (x,c) => c.copy(numnodes=x) ).text("Number of nodes")
 
     opt[Int]('e', "numedges").action( (x,c) => c.copy(numedges=x) ).text("Number of edges")
+
+    opt[Double]('u', "mu").action( (x,c) => c.copy(mu=x) ).text("Mu for logNormalGraph generation")
+
+    opt[Double]('s', "sigma").action( (x,c) => c.copy(sigma=x) ).text("Sigma for logNormalGraph generation")
 
     opt[String]('E', "edgesfile").action( (x,c) => c.copy(edgesfile=x) ).text("Path to save edges to")
 
@@ -89,13 +95,21 @@ object networkanalysis {
 
   def generate(opts: Config, sc: SparkContext) {
 
-    opts.genmethod match {
-      case "rmat" => {
-        val g = GraphGenerators.rmatGraph(sc, opts.numnodes, opts.numedges)
-        g.vertices.saveAsTextFile(opts.nodesfile)
-        g.edges.saveAsTextFile(opts.edgesfile)
-      }
+    val g = opts.genmethod match {
+
+      case "rmat" =>
+        GraphGenerators.rmatGraph(sc, opts.numnodes, opts.numedges);
+      case "lognormal" =>
+        GraphGenerators.logNormalGraph(
+          sc, opts.numnodes,
+          numEParts=opts.numedges,
+          mu=opts.mu,
+          sigma=opts.sigma
+        )
     }
+
+    g.vertices.saveAsTextFile(opts.nodesfile)
+    g.edges.saveAsTextFile(opts.edgesfile)
 
   }
 
