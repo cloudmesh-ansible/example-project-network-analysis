@@ -1,3 +1,17 @@
+/*
+
+ This file is part of the network-analysis example project for
+ FutureSystems at Indiana University.
+
+ Purpose:
+ 1) generate a graph and save it to HDFS
+ 2) load the graph from HDFS and compute metrics
+
+ This uses the GraphX library (part of Apache Spark) to do so.
+
+ */
+
+
 import Console.println
 
 import scopt._
